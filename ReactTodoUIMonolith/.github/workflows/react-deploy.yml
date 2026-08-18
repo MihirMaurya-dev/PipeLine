@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature
 
   pull_request:
     branches:
@@ -19,26 +18,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
+          cache-dependency-path: ReactToDoUIMonolith/package-lock.json
 
-      - name: Install Dependencies
+      - name: Install dependencies
+        working-directory: ./ReactToDoUIMonolith
         run: npm ci
 
-      - name: Build React Application
+      - name: Build React application
+        working-directory: ./ReactToDoUIMonolith
         run: npm run build
 
-      - name: Upload React Build
+      - name: Upload React build
         uses: actions/upload-artifact@v4
         with:
           name: react-build
-          path: build
+          path: ReactToDoUIMonolith/build
 
   deploy:
     name: Deploy to Azure
@@ -47,15 +49,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download React Build
+      - name: Download React build
         uses: actions/download-artifact@v4
         with:
           name: react-build
           path: build
 
-      - name: Deploy to Azure App Service
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          app-name: react-todo-1608
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./build
