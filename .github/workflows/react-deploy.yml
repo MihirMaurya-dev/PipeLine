@@ -25,8 +25,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: ReactToDoUIMonolith/package-lock.json
+
+      - name: Check React project
+        working-directory: ./ReactToDoUIMonolith
+        run: |
+          pwd
+          ls -la
 
       - name: Install dependencies
         working-directory: ./ReactToDoUIMonolith
