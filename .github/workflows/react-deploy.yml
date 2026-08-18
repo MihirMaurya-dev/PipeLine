@@ -28,6 +28,12 @@ jobs:
           cache: npm
           cache-dependency-path: ReactTodoUIMonolith/package-lock.json
 
+      - name: Check React project
+        working-directory: ./ReactTodoUIMonolith
+        run: |
+          pwd
+          ls -la
+
       - name: Install dependencies
         working-directory: ./ReactTodoUIMonolith
         run: npm ci
