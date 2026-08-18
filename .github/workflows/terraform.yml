@@ -44,3 +44,29 @@ jobs:
       - name: Terraform Plan
         working-directory: ./1608
         run: terraform plan
+
+  terraform-apply:
+    name: Terraform Apply
+    needs: terraform
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        working-directory: ./1608
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: ./1608
+        run: terraform apply -auto-approve
