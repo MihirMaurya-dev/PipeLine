@@ -26,21 +26,21 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: ReactToDoUIMonolith/package-lock.json
+          cache-dependency-path: ReactTodoUIMonolith/package-lock.json
 
       - name: Install dependencies
-        working-directory: ./ReactToDoUIMonolith
+        working-directory: ./ReactTodoUIMonolith
         run: npm ci
 
       - name: Build React application
-        working-directory: ./ReactToDoUIMonolith
+        working-directory: ./ReactTodoUIMonolith
         run: npm run build
 
       - name: Upload React build
         uses: actions/upload-artifact@v4
         with:
           name: react-build
-          path: ReactToDoUIMonolith/build
+          path: ReactTodoUIMonolith/build
 
   deploy:
     name: Deploy to Azure
